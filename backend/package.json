@@ -1,0 +1,15 @@
+{
+  "name": "backend-inotebook",
+  "version": "1.0.0",
+  "description": "This is a cloud based book which has advance featuers like login logout etc",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ahmed Arbaz",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "mongoose": "^8.5.0"
+  }
+}
