@@ -65,7 +65,7 @@ try {
 
 } catch (error) {
     console.log(error.message);
-    res.status(500).send("Some error occured")
+    res.status(500).send("Internal Server Error")
 }
     
     
@@ -74,6 +74,55 @@ try {
 
     //.save kia hay aur user ko req.body dia hay to jasay hi request maro gay to body may jo data dalo gay vo save bhi ho jay ga mongodb may aur user ka schema banaya hay to aus kay hisab say data do 
 
+
+
+//Authenticate a User Using: Post "/api/auth/login".No login required Creating Login
+
+router.post('/login',[
+    //asay router may req,res say pahaly ak array bano phir validation lagaty jao 
+    body('email',"Enter a valid email").isEmail(),
+    body('password',"Enter your password"),
+    
+],async (req,res)=>{
+
+    //If there are errors, return Bad request and the errors
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(400).json({errors:errors.array()});
+    }
+
+    // Using Destructuring for login
+    const {email, password} = req.body;
+
+    try {
+        let user = await User.findOne({email});
+        if(!user){
+            return res.status(400).json({error:"Plese try to login with correct corendenials"})
+        }
+
+
+        //Compareing the Password
+        const passwordCompare = await bcrypt.compare(password,user.password); 
+        //ya promise return kar raha hay to await karo
+        if(!passwordCompare){
+            return res.status(400).json({error:"Plese try to login with correct corendenials"})
+        }
+
+        //If all things are correct we provide user a auth token same like above
+        const data = {
+            user:{
+                id:user.id
+            }
+        }
+        const authToken = jwt.sign(data,JWT_SECRET);
+        res.json({authToken:authToken})
+
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send("Internal Server Error");
+    }
+
+})
 
 
 module.exports = router
