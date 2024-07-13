@@ -5,7 +5,7 @@ const express = require('express')
 
 connectToMongo();
 const app = express()
-const port = 3000
+const port = 5000 //5000 kia Q kay 3000 pay react app chalay gi
 
 
 // using middleware
