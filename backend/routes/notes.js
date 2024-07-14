@@ -51,26 +51,60 @@ router.post("/addnotes",fetchuser,[
 router.put('/updatenote/:id',fetchuser, async (req,res)=>{
   //ya ham nay put request bani hay aur sath may id ki jaga jis user ka note hay aus ki id copy kar kay dalni ho gi url may or route may jab request marin gay thunder may dakh lo 
   const {title,description,tag} = req.body;
-  //Create a newNote object
-  const newNote = {};
-  if(title){newNote.title = title};
-  if(description){newNote.description = description};
-  if(tag){newNote.tag = tag};
 
-  //Find the note to be updated and update it
-  let note = await Notes.findById(req.params.id); //ya ham nay kia for checking on id note exist or not
-  if(!note){ return res.status(404).send("Not Found")}
+try {
+    
+    //Create a newNote object
+    const newNote = {};
+    if(title){newNote.title = title};
+    if(description){newNote.description = description};
+    if(tag){newNote.tag = tag};
+  
+    //Find the note to be updated and update it
+    let note = await Notes.findById(req.params.id); //ya ham nay kia for checking on id note exist or not
+    if(!note){ return res.status(404).send("Not Found")}
+  
+    //For checking same user is accessing or not
+    if(note.user.toString() !== req.user.id){
+      return res.status(401).send("Not Allowed");
+    }
+  
+    // now all checking is completed now if there is present a user so he is authorized
+    note = await Notes.findByIdAndUpdate(req.params.id,{$set:newNote},{new:true})
+    res.json({note})
+  
+} catch (error) {
+  console.log(error.message);
+  res.status(500).send("Internal Server Error");
+}
 
-  //For checking same user is accessing or not
-  if(note.user.toString() !== req.user.id){
-    return res.status(401).send("Not Allowed");
+})
+
+//ROUTE 4 : Delete existing  Notes Using: Delet "/api/notes/Delete".Login required
+router.delete('/deletenote/:id',fetchuser, async (req,res)=>{
+  //ya ham nay put request bani hay aur sath may id ki jaga jis user ka note hay aus ki id copy kar kay dalni ho gi url may or route may jab request marin gay thunder may dakh lo 
+  const {title,description,tag} = req.body;
+  
+  try {
+    
+    //Find the note to be delete and delete it
+    let note = await Notes.findById(req.params.id); //ya ham nay kia for checking on id note exist or not
+    if(!note){ return res.status(404).send("Not Found")}
+  
+    //Allow deletion aonly if user owns this Note
+    if(note.user.toString() !== req.user.id){
+      return res.status(401).send("Not Allowed");
+    }
+  
+    // now all checking is completed now if there is present a user so he is authorized
+    note = await Notes.findByIdAndDelete(req.params.id)
+    res.json({"Success":"Note has been deleted",note:note})
+  
+  
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Internal Server Error");
   }
-
-  // now all checking is completed now if there is present a user so he is authorized
-  note = await Notes.findByIdAndUpdate(req.params.id,{$set:newNote},{new:true})
-  res.json({note})
-
-
 })
 
 
