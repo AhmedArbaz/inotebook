@@ -83,7 +83,7 @@ try {
 //ROUTE 4 : Delete existing  Notes Using: Delet "/api/notes/Delete".Login required
 router.delete('/deletenote/:id',fetchuser, async (req,res)=>{
   //ya ham nay put request bani hay aur sath may id ki jaga jis user ka note hay aus ki id copy kar kay dalni ho gi url may or route may jab request marin gay thunder may dakh lo 
-  const {title,description,tag} = req.body;
+  
   
   try {
     
