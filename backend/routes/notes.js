@@ -45,4 +45,33 @@ router.post("/addnotes",fetchuser,[
   }
 );
 
+
+
+//ROUTE 3:Update existing  Notes Using: Put "/api/notes/updatenotes".Login required
+router.put('/updatenote/:id',fetchuser, async (req,res)=>{
+  //ya ham nay put request bani hay aur sath may id ki jaga jis user ka note hay aus ki id copy kar kay dalni ho gi url may or route may jab request marin gay thunder may dakh lo 
+  const {title,description,tag} = req.body;
+  //Create a newNote object
+  const newNote = {};
+  if(title){newNote.title = title};
+  if(description){newNote.description = description};
+  if(tag){newNote.tag = tag};
+
+  //Find the note to be updated and update it
+  let note = await Notes.findById(req.params.id); //ya ham nay kia for checking on id note exist or not
+  if(!note){ return res.status(404).send("Not Found")}
+
+  //For checking same user is accessing or not
+  if(note.user.toString() !== req.user.id){
+    return res.status(401).send("Not Allowed");
+  }
+
+  // now all checking is completed now if there is present a user so he is authorized
+  note = await Notes.findByIdAndUpdate(req.params.id,{$set:newNote},{new:true})
+  res.json({note})
+
+
+})
+
+
 module.exports = router;
