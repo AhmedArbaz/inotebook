@@ -4,9 +4,11 @@ const User = require("../models/User");
 const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
+const fetchuser = require("../middleware/fetchuser.js")
+require('dotenv').config()
 
 //ya jwt token bana rahay hain aur ya idealy config file ya .env may
-const JWT_SECRET = "Ahmedisagoodb$oy"; // ya secure jaga pay honi chiay eg env may ya string jwt banaty hoay sath may di jay gi nichay dakh lo jaha jwt banaya hay
+const JWT_SECRET = process.env.JWT_SECRET; // ya secure jaga pay honi chiay eg env may ya string jwt banaty hoay sath may di jay gi nichay dakh lo jaha jwt banaya hay
 
 //rOUTE 1: Create a User using: POST "/api/auth/createuser", No login required
 router.post(
@@ -71,7 +73,6 @@ router.post(
   }
 );
 
-//.save kia hay aur user ko req.body dia hay to jasay hi request maro gay to body may jo data dalo gay vo save bhi ho jay ga mongodb may aur user ka schema banaya hay to aus kay hisab say data do
 
 //ROUTE 2: Authenticate a User Using: Post "/api/auth/login".No login required Creating Login
 
@@ -123,5 +124,23 @@ router.post(
     }
   }
 );
+
+//ROUTE 3: Get loggedin User Details Using: Post "/api/auth/getuser".Login required
+
+router.post("/getuser",fetchuser, async (req, res) => {
+try {
+         
+    let userId = req.user.id;
+    const user = await User.findById(userId).select("-password")
+    res.send(user)
+
+        }
+
+ catch (error) {
+    console.log(error.message);
+    res.status(500).send("Internal Server Error");
+  }})
+
+
 
 module.exports = router;
