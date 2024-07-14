@@ -14,7 +14,7 @@ app.use(express.json()) //ab ham request ki body may kuch bhi bhaj sakty hain eg
 // Available routes
 
 app.use('/api/auth', require("./routes/auth"))
-app.use('/api/node', require("./routes/node"))
+app.use('/api/notes', require("./routes/notes"))
 
 
 //ya default route hay jo kay yahi rahnay dia hay 
