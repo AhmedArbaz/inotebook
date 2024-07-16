@@ -12,7 +12,7 @@ const {notes,setNotes} = context; //Destructure kia lay kar ay apny context say 
         {/* ya use kia .map may  */}
         {
         notes.map((notes)=>{
-          return <NoteItem notes={notes}/>; 
+          return <NoteItem key={notes._id} notes={notes}/>; 
           // ya props pass kia NoteItem ko 
         })
       }
