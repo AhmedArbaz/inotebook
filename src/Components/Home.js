@@ -1,4 +1,5 @@
 import React from "react";
+import Notes from "./Notes";
 
 const Home = () => {
   return (
@@ -44,6 +45,9 @@ const Home = () => {
       
       <h2 className="my-3">Your Notes</h2>
 
+    <div className="">
+      <Notes/>
+    </div>
     </div>
   );
 };

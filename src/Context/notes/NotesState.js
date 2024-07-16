@@ -1,16 +1,37 @@
 import noteContext from "./noteContext";
+import { useState } from "react";
 //ya import kia bany hoay context ko aur use kia 
 
 
 const NoteState = (props)=>{
-
-    // This is an object we make it to show how we can make obj in useContext
- 
-
-
+const initialNotes = [
+    {
+        "_id": "6693d0196e7d237bde2ae3cd",
+        "user": "669247f0fe53cf96ca02ed66",
+        "title": "My Title Exersice",
+        "description": "Do Exersice hard",
+        "tag": "In Gym",
+        "Date": "2024-07-14T13:18:17.475Z",
+        "createdAt": "2024-07-14T13:18:17.482Z",
+        "updatedAt": "2024-07-14T13:20:46.041Z",
+        "__v": 0
+      },
+      {
+        "_id": "6694ca1b33a76c37871b3fb8",
+        "user": "669247f0fe53cf96ca02ed66",
+        "title": "Go sleep",
+        "description": "Sleep atleast 6 hours for good results",
+        "tag": "Sleep",
+        "Date": "2024-07-15T07:04:59.010Z",
+        "createdAt": "2024-07-15T07:04:59.015Z",
+        "updatedAt": "2024-07-15T07:04:59.015Z",
+        "__v": 0
+      },
+]
+const [notes, setNotes] = useState(initialNotes);
     return (
         // noteContext file may ais context ko banaya hay aur yaha ausi context ko use kia hay 
-        <noteContext.Provider value={{}}>
+        <noteContext.Provider value={{notes:notes,setNotes:setNotes}}>
             {props.children} 
          {/* ais ka porps.childern ka matlab jitnay bhi component hain aun ko as props pass ho jay */}
         </noteContext.Provider>
