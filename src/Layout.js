@@ -12,7 +12,10 @@ const Layout = () => {
 
       <Navbar/>
       {/* ya outlet aisi liay use kia kay navbar sab may ay but aus kay bad sab change hotay jain  */}
+      <div className="container"> 
+        {/* sab ko container class dani thi aisi liay direct outlet ko hi day di hay  */}
       <Outlet/> 
+      </div>
 
       </NoteState>
 
