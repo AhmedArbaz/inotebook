@@ -62,9 +62,33 @@ const initialNotes = [
       }
 ]
 const [notes, setNotes] = useState(initialNotes);
+// Add a Note
+const addNote = (title,description,tag)=>{
+    console.log("Adding a new note");
+ const  note = {"_id": "6694caa2926316906f9bb31d",
+    "user": "669247f0fe53cf96ca02ed66",
+    "title": title,
+    "description": description,
+    "tag": tag,
+    "Date": "2024-07-15T07:07:14.890Z",
+    "createdAt": "2024-07-15T07:07:14.896Z",
+    "updatedAt": "2024-07-15T07:07:14.896Z",
+    "__v": 0
+    }
+
+setNotes(notes.concat(note))
+}
+// Delete a Note
+const deleteNote = ()=>{
+
+}
+// Edit a Note
+const EditNote = ()=>{
+
+}
     return (
         // noteContext file may ais context ko banaya hay aur yaha ausi context ko use kia hay 
-        <noteContext.Provider value={{notes:notes,setNotes:setNotes}}>
+        <noteContext.Provider value={{notes:notes,setNotes:setNotes,addNote,deleteNote,EditNote}}>
             {props.children} 
          {/* ais ka porps.childern ka matlab jitnay bhi component hain aun ko as props pass ho jay */}
         </noteContext.Provider>
