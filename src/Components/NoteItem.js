@@ -1,6 +1,13 @@
-import React from 'react'
+import noteContext from "../Context/notes/noteContext";
+import { useContext } from "react"; //yaha use karna tha to useContext ki imp kia
+
+
 
 const NoteItem = (props) => {
+  //ya delenote ko context say lay kar ay 
+  const context = useContext(noteContext);
+    const {deleteNote} = context;
+
   const {notes} = props; //ya destructing ki 
   return (
     <div className='col-md-3'> 
@@ -9,7 +16,7 @@ const NoteItem = (props) => {
   <div className="card-body">
     <h5 className="card-title">{notes.title}</h5>
     <p className="card-text">{notes.description}</p>
-    <i className="fa-solid fa-trash-can mx-2"></i>
+    <i className="fa-solid fa-trash-can mx-2"onClick={()=>{deleteNote(notes._id)}}></i>
     <i className="fa-solid fa-pen-to-square mx-2"></i>
   </div>
 </div>

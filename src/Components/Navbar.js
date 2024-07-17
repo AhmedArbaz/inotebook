@@ -1,13 +1,9 @@
 import React from 'react'
 import { Link,useLocation } from 'react-router-dom'
-import { useEffect } from 'react'
 const Navbar = () => {
   // Using location Hook  ya use hota hay ager hamin location change karni ho to ab jsay useEffect may loction ko use karin kay location jasy /about ho to ausy active kar do ternry operator ko use kain gay aur load kay liay useEffect ko
   let location = useLocation();
-  
-  useEffect(() => {
-    console.log(location.pathname);// abhi dakho ya log kar raha hay ager / pay hay to aus ka bata raha hay /about pay aus ka 
-  }, [location]);
+
   return (
     <>
       <nav className="navbar navbar-dark  navbar-expand-lg bg-dark">

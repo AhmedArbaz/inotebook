@@ -79,7 +79,10 @@ const addNote = (title,description,tag)=>{
 setNotes(notes.concat(note))
 }
 // Delete a Note
-const deleteNote = ()=>{
+const deleteNote = (id)=>{
+  console.log("Deleting the note" +id);
+const  newNotes = notes.filter((note)=>{return note._id!==id})
+setNotes(newNotes)
 
 }
 // Edit a Note
