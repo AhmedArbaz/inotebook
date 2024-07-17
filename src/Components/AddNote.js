@@ -51,6 +51,22 @@ const AddNote = () => {
 
         />
       </div>
+      <div className="input-group flex-nowrap mb-4">
+        <span className="input-group-text" id="tag">
+          Tag
+        </span>
+        <input
+          type="text"
+          name="tag"
+          id="tag"
+          className="form-control"
+          placeholder="Tag"
+          aria-label="text"
+          aria-describedby="addon-wrapping"
+          onChange={onChange}
+
+        />
+      </div>
       
       <button type="button" className="btn btn-primary" onClick={handleClick}>Add Notes</button>
       

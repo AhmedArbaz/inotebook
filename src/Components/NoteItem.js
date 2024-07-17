@@ -8,7 +8,7 @@ const NoteItem = (props) => {
   const context = useContext(noteContext);
     const {deleteNote} = context;
 
-  const {notes} = props; //ya destructing ki 
+  const {notes, updateNote } = props; //ya destructing ki 
   return (
     <div className='col-md-3'> 
     {/* ya col-md-3 karny say ya column may ho gaya aur Notes.js may container hata hay row kar dia  */}
@@ -17,7 +17,7 @@ const NoteItem = (props) => {
     <h5 className="card-title">{notes.title}</h5>
     <p className="card-text">{notes.description}</p>
     <i className="fa-solid fa-trash-can mx-2"onClick={()=>{deleteNote(notes._id)}}></i>
-    <i className="fa-solid fa-pen-to-square mx-2"></i>
+    <i className="far fa-edit mx-2" onClick={()=>{updateNote(notes)}}></i>
   </div>
 </div>
     </div>

@@ -56,11 +56,26 @@ const addNote = async(title,description,tag)=>{
     "updatedAt": "2024-07-15T07:07:14.896Z",
     "__v": 0
     }
-
+response.json()
 setNotes(notes.concat(note))
 }
 // Delete a Note
-const deleteNote = (id)=>{
+const deleteNote =async (id)=>{
+// Api call for deleteNote 
+
+const response = await fetch(`${host}/api/notes/deletenote/${id}`,{
+  method:'DELETE',
+  headers:{
+    'Content-Type':'application/json',
+    // ya auth-token lay kar ay hain headers say bad may change karin gay asay hard code nahi karin gay 
+    'auth-token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjY5MjQ3ZjBmZTUzY2Y5NmNhMDJlZDY2In0sImlhdCI6MTcyMDg3NTcwMn0.p4VbRo9qK5AmzvsGJGNkw2HtiDxwVRJ6AIFmQ99Ug6U'
+  },
+  
+  });
+const json = response.json();
+console.log(json);
+
+  
   console.log("Deleting the note" +id);
 const  newNotes = notes.filter((note)=>{return note._id!==id})
 setNotes(newNotes)
@@ -79,7 +94,7 @@ const EditNote = async (id,title,description,tag)=>{
   },
   body: JSON.stringify({title,description,tag}) //ya obj hay (title:title) asay likhin ya title, same bat hay 
   });
-  const json = response.json();
+ response.json();
   // Edit a Note Function
   for (let index = 0; index < notes.length; index++) {
     const element = notes[index];
