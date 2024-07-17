@@ -4,66 +4,47 @@ import { useState } from "react";
 
 
 const NoteState = (props)=>{
+  const host = 'http://localhost:5000' //ya ak basic var banaya
 const initialNotes = [
-    {
-        "_id": "6693bfceb6ea37e81a745f1f",
-        "user": "669247f0fe53cf96ca02ed66",
-        "title": "My Title Exersice",
-        "description": "Do Exersice hard",
-        "tag": "In Gym",
-        "Date": "2024-07-14T12:08:46.603Z",
-        "createdAt": "2024-07-14T12:08:46.604Z",
-        "updatedAt": "2024-07-14T12:10:08.226Z",
-        "__v": 0
-      },
-      {
-        "_id": "6693c02eb6ea37e81a745f24",
-        "user": "669247f0fe53cf96ca02ed66",
-        "title": "Exersice",
-        "description": "Hard exersice",
-        "tag": "Gym",
-        "Date": "2024-07-14T12:10:22.661Z",
-        "createdAt": "2024-07-14T12:10:22.661Z",
-        "updatedAt": "2024-07-14T12:10:22.661Z",
-        "__v": 0
-      },
-      {
-        "_id": "6693d0196e7d237bde2ae3cd",
-        "user": "669247f0fe53cf96ca02ed66",
-        "title": "My Title Exersice",
-        "description": "Do Exersice hard",
-        "tag": "In Gym",
-        "Date": "2024-07-14T13:18:17.475Z",
-        "createdAt": "2024-07-14T13:18:17.482Z",
-        "updatedAt": "2024-07-14T13:20:46.041Z",
-        "__v": 0
-      },
-      {
-        "_id": "6694ca1b33a76c37871b3fb8",
-        "user": "669247f0fe53cf96ca02ed66",
-        "title": "Go sleep",
-        "description": "Sleep atleast 6 hours for good results",
-        "tag": "Sleep",
-        "Date": "2024-07-15T07:04:59.010Z",
-        "createdAt": "2024-07-15T07:04:59.015Z",
-        "updatedAt": "2024-07-15T07:04:59.015Z",
-        "__v": 0
-      },
-      {
-        "_id": "6694caa2926316906f9bb31d",
-        "user": "669247f0fe53cf96ca02ed66",
-        "title": "Go sleep",
-        "description": "Sleep atleast 6 hours for good results",
-        "tag": "Sleep",
-        "Date": "2024-07-15T07:07:14.890Z",
-        "createdAt": "2024-07-15T07:07:14.896Z",
-        "updatedAt": "2024-07-15T07:07:14.896Z",
-        "__v": 0
-      }
+    
 ]
+//NOTE: CORES package install karna ho ga privacy ko hatany kay liay  BACKEND may install ho ga
 const [notes, setNotes] = useState(initialNotes);
-// Add a Note
-const addNote = (title,description,tag)=>{
+
+// Get All note OR Fetch all Notes
+const GetNotes = async()=>{
+  // APi Call for Get all notes
+  const response = await fetch(`${host}/api/notes/fetchallnotes`,{
+    method:'GET',
+    headers:{
+      'Content-Type':'application/json',
+      // ya auth-token lay kar ay hain headers say bad may change karin gay asay hard code nahi karin gay 
+      'auth-token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjY5MjQ3ZjBmZTUzY2Y5NmNhMDJlZDY2In0sImlhdCI6MTcyMDg3NTcwMn0.p4VbRo9qK5AmzvsGJGNkw2HtiDxwVRJ6AIFmQ99Ug6U'
+    },
+    
+    });
+  const json = await response.json()
+console.log(json);
+setNotes(json) //initial note khali tha aur setNotes ko json kar dia to ais token may jitnay notes thy vo mil gay
+}
+
+
+
+const addNote = async(title,description,tag)=>{
+  // APi Call for AddNote
+  const response = await fetch(`${host}/api/notes/addnotes`,{
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      // ya auth-token lay kar ay hain headers say bad may change karin gay asay hard code nahi karin gay 
+      'auth-token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjY5MjQ3ZjBmZTUzY2Y5NmNhMDJlZDY2In0sImlhdCI6MTcyMDg3NTcwMn0.p4VbRo9qK5AmzvsGJGNkw2HtiDxwVRJ6AIFmQ99Ug6U'
+    },
+    body: JSON.stringify({title:title,description:description,tag:tag})
+    });
+    // const json = response.json();
+    
+    // Add a Note
+    // Fuction of AddNote 
     console.log("Adding a new note");
  const  note = {"_id": "6694caa2926316906f9bb31d",
     "user": "669247f0fe53cf96ca02ed66",
@@ -85,13 +66,36 @@ const  newNotes = notes.filter((note)=>{return note._id!==id})
 setNotes(newNotes)
 
 }
-// Edit a Note
-const EditNote = ()=>{
+
+const EditNote = async (id,title,description,tag)=>{
+  // API Call 
+  // host ak const var banaya hay jo kay sab say auper hay phir update kay endpoint ka link lay hain aur ais may id bhi hay 
+  const response = await fetch(`${host}/api/notes/updatenote/${id}`,{
+  method:'POST',
+  headers:{
+    'Content-Type':'application/json',
+    // ya auth-token lay kar ay hain headers say bad may change karin gay asay hard code nahi karin gay 
+    'auth-token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjY5MjQ3ZjBmZTUzY2Y5NmNhMDJlZDY2In0sImlhdCI6MTcyMDg3NTcwMn0.p4VbRo9qK5AmzvsGJGNkw2HtiDxwVRJ6AIFmQ99Ug6U'
+  },
+  body: JSON.stringify({title,description,tag}) //ya obj hay (title:title) asay likhin ya title, same bat hay 
+  });
+  const json = response.json();
+  // Edit a Note Function
+  for (let index = 0; index < notes.length; index++) {
+    const element = notes[index];
+    if (element._id === id) {
+      element.title = title;
+      element.description = description;
+      element.tag = tag;
+      
+    }
+    
+  }
 
 }
     return (
         // noteContext file may ais context ko banaya hay aur yaha ausi context ko use kia hay 
-        <noteContext.Provider value={{notes:notes,setNotes:setNotes,addNote,deleteNote,EditNote}}>
+        <noteContext.Provider value={{notes:notes,setNotes:setNotes,addNote,deleteNote,EditNote,GetNotes}}>
             {props.children} 
          {/* ais ka porps.childern ka matlab jitnay bhi component hain aun ko as props pass ho jay */}
         </noteContext.Provider>

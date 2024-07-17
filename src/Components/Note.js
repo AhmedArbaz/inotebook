@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useContext } from "react"; //yaha use karna tha to useContext ki imp kia
 import noteContext from "../Context/notes/noteContext";// ais may context create kia tha ais liay imp kia
 import NoteItem from './NoteItem';
@@ -6,7 +6,11 @@ import AddNote from './AddNote';
 
 const Notes = () => {
     const context = useContext(noteContext); //ak var may use kia ham nay jo create kia tha context jis file may 
-const {notes,addNote} = context; //Destructure kia lay kar ay apny context say jo values may dala tha nichay use kia hay as props pass kia hay NoteItem ko .map may 
+const {notes,GetNotes} = context; //Destructure kia lay kar ay apny context say jo values may dala tha nichay use kia hay as props pass kia hay NoteItem ko .map may 
+useEffect(() => {
+  GetNotes()
+  
+}, []);
   return (
     <>
     <AddNote/>
