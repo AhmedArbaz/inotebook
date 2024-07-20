@@ -56,7 +56,8 @@ const addNote = async(title,description,tag)=>{
     "updatedAt": "2024-07-15T07:07:14.896Z",
     "__v": 0
     }
-response.json()
+const json = await response.json()
+console.log(json);
 setNotes(notes.concat(note))
 }
 // Delete a Note
@@ -86,27 +87,31 @@ const EditNote = async (id,title,description,tag)=>{
   // API Call 
   // host ak const var banaya hay jo kay sab say auper hay phir update kay endpoint ka link lay hain aur ais may id bhi hay 
   const response = await fetch(`${host}/api/notes/updatenote/${id}`,{
-  method:'POST',
+  method:'PUT',
   headers:{
     'Content-Type':'application/json',
     // ya auth-token lay kar ay hain headers say bad may change karin gay asay hard code nahi karin gay 
     'auth-token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjY5MjQ3ZjBmZTUzY2Y5NmNhMDJlZDY2In0sImlhdCI6MTcyMDg3NTcwMn0.p4VbRo9qK5AmzvsGJGNkw2HtiDxwVRJ6AIFmQ99Ug6U'
   },
-  body: JSON.stringify({title,description,tag}) //ya obj hay (title:title) asay likhin ya title, same bat hay 
-  });
- response.json();
-  // Edit a Note Function
-  for (let index = 0; index < notes.length; index++) {
-    const element = notes[index];
-    if (element._id === id) {
-      element.title = title;
-      element.description = description;
-      element.tag = tag;
-      
-    }
-    
-  }
+  body: JSON.stringify({id,title,description,tag}) //ya obj hay (title:title) asay likhin ya title, same bat hay 
+});
+ const json = await response.json(); //ager responce laty haoy await nahi kia to promise ay gi to awaite karo gay to responce ay ga 
+ console.log(json);
+ 
+ let newNotes = JSON.parse(JSON.stringify(notes)) // NOTE: ya karny say hamary notes ki ak deep copy ban jay gi json.parse karny say phir nichay jaha jaha notes tha aus ki jaga newNotes ko dalo
 
+  // Edit a Note Function
+  for (let index = 0; index < newNotes.length; index++) {
+    const element = newNotes[index];
+    if (element._id === id) {
+      newNotes[index].title = title;
+      newNotes[index].description = description; //NOTE: ya ham phalay element.title kar rahay thay 
+      newNotes[index].tag = tag;
+      break;
+    }
+  }
+  setNotes(newNotes);
+// NOTE: sath may break bhi nahi kar rahay thay ais liay update nahi ho raha tha 
 }
     return (
         // noteContext file may ais context ko banaya hay aur yaha ausi context ko use kia hay 

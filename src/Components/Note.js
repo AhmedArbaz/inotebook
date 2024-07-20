@@ -7,31 +7,35 @@ import AddNote from './AddNote';
 
 const Notes = () => {
     const context = useContext(noteContext); //ak var may use kia ham nay jo create kia tha context jis file may 
-const {notes,GetNotes} = context; //Destructure kia lay kar ay apny context say jo values may dala tha nichay use kia hay as props pass kia hay NoteItem ko .map may 
+const {notes,GetNotes,EditNote} = context; //Destructure kia lay kar ay apny context say jo values may dala tha nichay use kia hay as props pass kia hay NoteItem ko .map may 
 useEffect(() => {
   GetNotes()
   // eslint-disable-next-line
 }, []);
 const ref = useRef(null) //ya use ref use kar rahay hain toggle kay liay use hota hay kisi ki bhi curent condion change kay liay
 
+const refClose = useRef(null) //NOTE: ya modal ko band karay ga ais ki jaga ham data-bs-dismiss="modal" bhi kar sakty hain update valay button may (abhi ais pay click karin gay to ham chaty hian kay update pay click ho to band ho to handleclike may dalin gay)
+
+const [note, setnote] = useState({id:"",etitle: "",edescription:"",etag:""});
+// ya ham nay id aur value nichay change ki thi aus ko yaha bhi change kar dia 
+
 const updateNote = (currentNote)=>{
   ref.current.click() //click() function hay kay ham apny modal ko use karin toggle ki thara
-  setnote({etitle:currentNote.title,edescription:currentNote.description,etag:currentNote.description})
+  setnote({id:currentNote._id,etitle:currentNote.title,edescription:currentNote.description,etag:currentNote.tag})
   //ya ham nay ais liay kia hay currentNote may title =title hi tha aus ki etitle kay equal karny kay liay kia ya 
   
 }
 
-const [note, setnote] = useState({etitle: "",edescription:"",etag:""});
-// ya ham nay id aur value nichay change ki thi aus ko yaha bhi change kar dia 
 
 const handleClick = (e)=>{
   console.log("updating the note---",);
-  e.preventDefault();
+  EditNote(note.id, note.etitle, note.edescription, note.etag) //EditNote ko NoteState say lay aur aus ko args diay aus kay 
+  refClose.current.click();
   
 }
 
 const onChange = (e)=>{
-  setnote({...updateNote,[e.target.name]:e.target.value}) //...note ais ka matlab hay jo properties hain vo rahin but more ais may add ho jain ya vohi purana kam kia kay jasay name change ho to value bhi change ho jay 
+  setnote({...note,[e.target.name]:e.target.value}) //...note ais ka matlab hay jo properties hain vo rahin but more ais may add ho jain ya vohi purana kam kia kay jasay name change ho to value bhi change ho jay 
 }
   return (
     <>
@@ -57,7 +61,7 @@ const onChange = (e)=>{
         {/* ya form copy kia hay AddNote valay say */}
         <div className="input-group flex-nowrap mb-4">
         <span className="input-group-text" id='etitle'>Title</span>
-        <input type="text" name="etitle" id="etitle" value={note.title} className="form-control" placeholder="Title" aria-label="Title" aria-describedby="addon-wrapping" onChange={onChange}/>
+        <input type="text" name="etitle" id="etitle" value={note.etitle} className="form-control" placeholder="Title" aria-label="Title" aria-describedby="addon-wrapping" onChange={onChange}/>
       </div>
       <div className="input-group flex-nowrap mb-4">
         <span className="input-group-text" id="edescription">
@@ -73,7 +77,7 @@ const onChange = (e)=>{
      
       </div>
       <div className="modal-footer">
-        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button ref={refClose} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="button" className="btn btn-primary" onClick={handleClick}>Update Changes</button>
       </div>
     </div>
