@@ -6,12 +6,13 @@ const AddNote = () => {
     const {addNote} = context;
 
 
-    const [note, setnote] = useState({title: "",description:"",tag:"default"});
+    const [note, setnote] = useState({title: "",description:"",tag:""});
 
 
     const handleClick = (e)=>{
         e.preventDefault();
         addNote(note.title, note.description, note.tag);
+        setnote({title: "",description:"",tag:""}) //NOTE: ya handleclick may dia kay jasay hi handleClick chal jay gay to setNote khali ho jay ga ya asay kam nahi karay ga jitnay bhi inputs hain aun may value do note.title des valy may value do note.description asa hi tag may bhi 
     }
 
     const onChange = (e)=>{
@@ -33,6 +34,8 @@ const AddNote = () => {
           aria-label="Title"
           aria-describedby="addon-wrapping"
           onChange={onChange}
+          minLength={5} required
+          value={note.title}
         />
       </div>
       <div className="input-group flex-nowrap mb-4">
@@ -48,7 +51,8 @@ const AddNote = () => {
           aria-label="text"
           aria-describedby="addon-wrapping"
           onChange={onChange}
-
+          minLength={5} required
+          value={note.description}
         />
       </div>
       <div className="input-group flex-nowrap mb-4">
@@ -64,11 +68,13 @@ const AddNote = () => {
           aria-label="text"
           aria-describedby="addon-wrapping"
           onChange={onChange}
-
+          value={note.tag}
+          
         />
       </div>
       
-      <button type="button" className="btn btn-primary" onClick={handleClick}>Add Notes</button>
+      {/* yaha ham nay validation lagi hay kay 5 say kam ho to button disable ho jay  */}
+      <button disabled={note.title.length<5 || note.description.length<5} type="button" className="btn btn-primary" onClick={handleClick}>Add Notes</button>
       
       <h2 className="my-3">Your Notes</h2>
    

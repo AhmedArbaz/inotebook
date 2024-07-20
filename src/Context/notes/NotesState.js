@@ -39,27 +39,18 @@ const addNote = async(title,description,tag)=>{
       // ya auth-token lay kar ay hain headers say bad may change karin gay asay hard code nahi karin gay 
       'auth-token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjY5MjQ3ZjBmZTUzY2Y5NmNhMDJlZDY2In0sImlhdCI6MTcyMDg3NTcwMn0.p4VbRo9qK5AmzvsGJGNkw2HtiDxwVRJ6AIFmQ99Ug6U'
     },
-    body: JSON.stringify({title:title,description:description,tag:tag})
+    body: JSON.stringify({title,description,tag})
     });
-    // const json = response.json();
     
     // Add a Note
     // Fuction of AddNote 
+    const note = await response.json();
+    setNotes(notes.concat(note))
     console.log("Adding a new note");
- const  note = {"_id": "6694caa2926316906f9bb31d",
-    "user": "669247f0fe53cf96ca02ed66",
-    "title": title,
-    "description": description,
-    "tag": tag,
-    "Date": "2024-07-15T07:07:14.890Z",
-    "createdAt": "2024-07-15T07:07:14.896Z",
-    "updatedAt": "2024-07-15T07:07:14.896Z",
-    "__v": 0
-    }
-const json = await response.json()
-console.log(json);
-setNotes(notes.concat(note))
 }
+
+
+
 // Delete a Note
 const deleteNote =async (id)=>{
 // Api call for deleteNote 

@@ -61,14 +61,14 @@ const onChange = (e)=>{
         {/* ya form copy kia hay AddNote valay say */}
         <div className="input-group flex-nowrap mb-4">
         <span className="input-group-text" id='etitle'>Title</span>
-        <input type="text" name="etitle" id="etitle" value={note.etitle} className="form-control" placeholder="Title" aria-label="Title" aria-describedby="addon-wrapping" onChange={onChange}/>
+        <input type="text" name="etitle" id="etitle" value={note.etitle} className="form-control" placeholder="Title" aria-label="Title" aria-describedby="addon-wrapping" onChange={onChange} minLength={5} required/>
       </div>
       <div className="input-group flex-nowrap mb-4">
         <span className="input-group-text" id="edescription">
           Description</span>
         <input type="text" name="edescription" id="edescription" value={note.edescription}
         // NOTE: ain sab may value day di note.description,note.title asay ya karny say jasay hi ham click karin gay edit pay to ais ki values jo hon gi vo aus may a jain gi lakin abhi likh nahi sakin gay Q kay onChange abhi sahi say nahi likha hay 
-        className="form-control" placeholder="Description" aria-label="text" aria-describedby="addon-wrapping" onChange={onChange}/>
+        className="form-control" placeholder="Description" aria-label="text" aria-describedby="addon-wrapping" onChange={onChange} minLength={5} required/>
       </div>
       <div className="input-group flex-nowrap mb-4">
         <span className="input-group-text" id="etag">Tag</span>
@@ -78,7 +78,8 @@ const onChange = (e)=>{
       </div>
       <div className="modal-footer">
         <button ref={refClose} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" className="btn btn-primary" onClick={handleClick}>Update Changes</button>
+        {/* ya validation lagi yaha bhi kay character aitnay na ho to update button disable ho */}
+        <button disabled={note.etitle.length<5 || note.edescription.length<5} type="button" className="btn btn-primary" onClick={handleClick}>Update Changes</button>
       </div>
     </div>
   </div>
@@ -87,6 +88,9 @@ const onChange = (e)=>{
    <div className='row'> {/*row kar dia aur aur NotesItems may col-md-3 kar dia to cards row may ho gay saray */}
 
         {/* ya use kia .map may  */}
+        <div className="container mx-4 ">
+        {notes.length === 0 && "There are not any Notes to Show"}
+        </div>
         {
           notes.map((notes)=>{
             return <NoteItem key={notes._id} notes={notes} updateNote={updateNote}/>; //ya updateNote function NoteItem may use hoa hay Q kay edit icon ausi may hay
