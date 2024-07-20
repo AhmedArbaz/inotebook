@@ -85,6 +85,7 @@ router.post(
   ],
   async (req, res) => {
     //If there are errors, return Bad request and the errors
+    let success = false //ya success bani hay jo kay frontend may hamin success true and false dakay gi
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -96,18 +97,20 @@ router.post(
     try {
       let user = await User.findOne({ email });
       if (!user) {
+        success = false
         return res
           .status(400)
-          .json({ error: "Plese try to login with correct corendenials" });
+          .json({success, error: "Plese try to login with correct corendenials" });
       }
 
       //Compareing the Password
       const passwordCompare = await bcrypt.compare(password, user.password);
       //ya promise return kar raha hay to await karo
       if (!passwordCompare) {
+        success = false
         return res
           .status(400)
-          .json({ error: "Plese try to login with correct corendenials" });
+          .json({success, error: "Plese try to login with correct corendenials" });
       }
 
       //If all things are correct we provide user a auth token same like above
@@ -117,7 +120,8 @@ router.post(
         },
       };
       const authToken = jwt.sign(data, JWT_SECRET);
-      res.json({ authToken: authToken });
+      success = true;
+      res.json({success:success, authToken: authToken });
     } catch (error) {
       console.log(error.message);
       res.status(500).send("Internal Server Error");
