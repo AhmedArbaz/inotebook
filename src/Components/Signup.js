@@ -20,8 +20,14 @@ let navigate = useNavigate();
     });
     const json = await response.json()
     console.log(json);
-    navigate("/"); //NOTE: ya kam hota hay navigate hook ka kay ager true hoa to ais page pay navigate karo 
-
+    if(json.success){
+      localStorage.setItem('token',json.authtoken)
+      navigate("/"); //NOTE: ya kam hota hay navigate hook ka kay ager true hoa to ais page pay navigate karo 
+    }
+    else{
+      alert("invalid credentials")
+    }
+    
 }
 
 
