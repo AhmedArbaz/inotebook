@@ -22,10 +22,11 @@ router.post(
     }),
   ],
   async (req, res) => {
+    let success = false; //yaha bhi success vala lagaya signup kay liay jasay login may lagaya tha
     //This is for errors, it returns bad request and error messages instead of complete error
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({success, errors: errors.array() });
     }
 
     try {
@@ -36,7 +37,7 @@ router.post(
       if (user) {
         return res
           .status(400)
-          .json({ error: "Sorry a user with this email already exists" });
+          .json({success, error: "Sorry a user with this email already exists" });
       }
 
       //Creating password secure using bcrypt package we use in it salt
@@ -64,8 +65,8 @@ router.post(
 
       //ager koi responce nahi bhajo gay to error ay ga ya yad rakhna ya user nahi dia jata token dia jata hay vo abhi banaya hay vo dain gay
       // res.json(user)
-
-      res.json({ authToken: authToken });
+      success = true
+      res.json({success, authToken: authToken });
     } catch (error) {
       console.log(error.message);
       res.status(500).send("Internal Server Error");
